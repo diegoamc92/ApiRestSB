@@ -39,11 +39,6 @@ public class PeliculaController {
     @GetMapping("/api/pelicula/{id}")
     public ResponseEntity<Pelicula> obtenerPelicula(@PathVariable Long id){
         Optional<Pelicula> opt = repository.findById(id);
-        if (opt.isEmpty()){
-            return ResponseEntity.badRequest().build();
-        }
-        else {
-            return ResponseEntity.ok(opt.get());
-        }
+        return opt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }
