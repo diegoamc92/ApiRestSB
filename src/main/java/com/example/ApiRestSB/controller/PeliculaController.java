@@ -3,9 +3,8 @@ package com.example.ApiRestSB.controller;
 import com.example.ApiRestSB.models.Pelicula;
 import com.example.ApiRestSB.repository.PeliculaRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,5 +39,14 @@ public class PeliculaController {
     public ResponseEntity<Pelicula> obtenerPelicula(@PathVariable Long id){
         Optional<Pelicula> opt = repository.findById(id);
         return opt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @PostMapping("/api/peliculas")
+    public ResponseEntity<Pelicula> guardarPelicula(@RequestBody Pelicula pelicula){
+        if (pelicula.getId()!= null){
+            return ResponseEntity.badRequest().build();
+        }
+        repository.save(pelicula);
+        return ResponseEntity.ok(pelicula);
     }
 }
