@@ -54,4 +54,24 @@ public class PeliculaController {
         repository.save(pelicula);
         return ResponseEntity.ok(pelicula);
     }
+
+    @CrossOrigin("http://localhost:63343")
+    @PutMapping("/api/peliculas")
+    public ResponseEntity<Pelicula> actualizarPelicula(@RequestBody Pelicula pelicula){
+        if (pelicula.getId()!= null || repository.existsById(pelicula.getId())){
+            return ResponseEntity.badRequest().build();
+        }
+        repository.save(pelicula);
+        return ResponseEntity.ok(pelicula);
+    }
+
+    @CrossOrigin("http://localhost:63343")
+    @DeleteMapping("/api/peliculas/{id}")
+    public ResponseEntity<Pelicula> eliminarPelicula(@PathVariable Long id){
+        if (id == null || !repository.existsById(id)){
+            return ResponseEntity.badRequest().build();
+        }
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
