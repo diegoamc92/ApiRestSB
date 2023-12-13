@@ -3,7 +3,6 @@ package com.example.ApiRestSB.controller;
 import com.example.ApiRestSB.models.Pelicula;
 import com.example.ApiRestSB.repository.PeliculaRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,9 +37,15 @@ public class PeliculaController {
     @GetMapping("/api/pelicula/{id}")
     public ResponseEntity<Pelicula> obtenerPelicula(@PathVariable Long id){
         Optional<Pelicula> opt = repository.findById(id);
-        return opt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        if (opt.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        else {
+            return ResponseEntity.ok(opt.get());
+        }
     }
 
+    @CrossOrigin("http://localhost:63343")
     @PostMapping("/api/peliculas")
     public ResponseEntity<Pelicula> guardarPelicula(@RequestBody Pelicula pelicula){
         if (pelicula.getId()!= null){
