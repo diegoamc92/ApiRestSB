@@ -61,7 +61,7 @@ public class PeliculaController {
     @CrossOrigin("http://127.0.0.1:5500")
     @PutMapping("/api/peliculas")
     public ResponseEntity<Pelicula> actualizarPelicula(@RequestBody Pelicula pelicula){
-        if (pelicula.getId()!= null || repository.existsById(pelicula.getId())){
+        if (pelicula.getId()==null || !repository.existsById(pelicula.getId())){
             return ResponseEntity.badRequest().build();
         }
         repository.save(pelicula);
